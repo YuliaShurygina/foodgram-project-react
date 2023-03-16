@@ -6,6 +6,6 @@ COPY requirements.txt .
 
 RUN pip3 install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt 
 
-COPY foodgram/ .
+COPY backend/ .
 
-CMD ["gunicorn", "foodgram.wsgi:application", "--bind", "0:8000" ]
+CMD ["gunicorn", "backend.wsgi:application", "--bind", "0:8000" ]
