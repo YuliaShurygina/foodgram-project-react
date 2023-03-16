@@ -5,8 +5,8 @@ services:
     image: postgres:13.0-alpine
     volumes:
       - /var/lib/postgresql/data/
-    environment:
-      POSTGRES_PASSWORD: 051186
+    env_file:
+      - ./.env
   web:
     image: ../backend
     restart: always
