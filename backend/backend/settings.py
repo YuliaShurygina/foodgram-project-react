@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_RECIPES_LIMIT = 5
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 DEBUG = True
-ALLOWED_HOSTS = ['*', 'localhost', '51.250.94.249']
+ALLOWED_HOSTS = ['*', 'localhost', '51.250.94.249', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -60,8 +60,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 # DATABASES = {
 #     'default': {
 #         'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),

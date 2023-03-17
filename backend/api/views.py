@@ -3,13 +3,12 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
+from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
+                            ShoppingCart, Tag)
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
-
-from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
-                            ShoppingCart, Tag)
 from users.models import Subscribtion, User
 
 from .filters import RecipeFilter
@@ -111,7 +110,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         relation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def add(self, model, user, pk, name):
+    def add(self, model, user, pk, name, request):
         """Добавление рецепта в список пользователя."""
         recipe = get_object_or_404(Recipe, pk=pk)
         relation = model.objects.filter(user=user, recipe=recipe)
@@ -120,7 +119,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 {'errors': f'Нельзя повторно добавить рецепт в {name}'},
                 status=status.HTTP_400_BAD_REQUEST)
         model.objects.create(user=user, recipe=recipe)
-        serializer = RecipeLiteSerializer(recipe)
+        serializer = RecipeLiteSerializer(recipe, data=request.data,
+                                          context={"request": request})
+        serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(methods=['post', 'delete'], detail=True)
@@ -129,7 +130,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         user = request.user
         if request.method == 'POST':
             name = 'Избранное'
-            return self.add(Favorite, user, pk, name)
+            return self.add(Favorite, user, pk, name, request)
         if request.method == 'DELETE':
             name = 'избранного'
             return self.delete_relation(Favorite, user, pk, name)
@@ -141,7 +142,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         user = request.user
         if request.method == 'POST':
             name = 'список покупок'
-            return self.add(ShoppingCart, user, pk, name)
+            return self.add(ShoppingCart, user, pk, name, request)
         if request.method == 'DELETE':
             name = 'списка покупок'
             return self.delete_relation(ShoppingCart, user, pk, name)

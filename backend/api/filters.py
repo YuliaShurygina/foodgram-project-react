@@ -13,17 +13,17 @@ class RecipeFilter(FilterSet):
         queryset=Tag.objects.all()
     )
     author = filters.ModelChoiceFilter(queryset=User.objects.all())
-    is_favorited = filters.BooleanFilter(method='favorited_filter')
-    is_in_shopping_cart = filters.BooleanFilter(method='shopping_cart_filter')
+    is_favorited = filters.BooleanFilter(method='filter_favorited')
+    is_in_shopping_cart = filters.BooleanFilter(method='filter_shopping_cart')
 
     def filter_favorited(self, queryset, name, value):
         if value:
-            return queryset.filter(favorite__user=self.request.user)
+            return queryset.filter(favorite_recipe__user=self.request.user)
         return queryset
 
     def filter_shopping_cart(self, queryset, name, value):
         if value:
-            return queryset.filter(shopping_cart__user=self.request.user)
+            return queryset.filter(recipe_shopping_cart__user=self.request.user)
         return queryset
 
     class Meta:
