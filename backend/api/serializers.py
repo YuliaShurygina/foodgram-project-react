@@ -222,11 +222,6 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         """Обновление рецепта."""
-        # instance.name = validated_data.get('name', instance.name)
-        # instance.cooking_time = validated_data.get(
-        #     'cooking_time', instance.cooking_time)
-        # instance.text = validated_data.get('text', instance.text)
-        # instance.image = validated_data.get('image', instance.image)
         if 'ingredients' in validated_data:
             ingredients = validated_data.pop('ingredients')
             instance.ingredients.clear()
@@ -236,11 +231,6 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             instance.tags.set(tags_data)
         return super().update(
             instance, validated_data)
-        # if ingredients_data is not None:
-        #     RecipeIngredient.objects.filter(recipe=instance).delete()
-        #     self.create_ingredients(ingredients_data, instance)
-        # response_with_updated_instance.save()
-        # return response_with_updated_instance
 
     def to_representation(self, instance):
         """Добавление полей с ингредиентами."""
