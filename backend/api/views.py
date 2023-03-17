@@ -110,7 +110,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         relation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def add(self, model, user, pk, name, request):
+    def add(self, model, user, pk, name):
         """Добавление рецепта в список пользователя."""
         recipe = get_object_or_404(Recipe, pk=pk)
         relation = model.objects.filter(user=user, recipe=recipe)
@@ -119,8 +119,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 {'errors': f'Нельзя повторно добавить рецепт в {name}'},
                 status=status.HTTP_400_BAD_REQUEST)
         model.objects.create(user=user, recipe=recipe)
-        serializer = RecipeLiteSerializer(recipe, data=request.data,
-                                          context={"request": request})
+        serializer = RecipeLiteSerializer(recipe)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -130,7 +129,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         user = request.user
         if request.method == 'POST':
             name = 'Избранное'
-            return self.add(Favorite, user, pk, name, request)
+            return self.add(Favorite, user, pk, name)
         if request.method == 'DELETE':
             name = 'избранного'
             return self.delete_relation(Favorite, user, pk, name)
@@ -141,8 +140,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Список покупок: добавление и удаление рецептов."""
         user = request.user
         if request.method == 'POST':
-            name = 'список покупок'
-            return self.add(ShoppingCart, user, pk, name, request)
+            name = 'Cписок покупок'
+            return self.add(ShoppingCart, user, pk, name)
         if request.method == 'DELETE':
             name = 'списка покупок'
             return self.delete_relation(ShoppingCart, user, pk, name)
@@ -155,7 +154,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         items = RecipeIngredient.objects.select_related(
             'recipe', 'ingredient')
         items = items.filter(
-            recipe__recipe_shopping_cart__user=request.user,)
+            recipe__shopping_cart_recipe__user=request.user,)
         items = items.values('ingredient__name', 'ingredient__measurement_unit'
                              ).annotate(
             name=F('ingredient__name'),

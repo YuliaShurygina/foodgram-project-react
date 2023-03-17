@@ -60,26 +60,26 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-#         'NAME': os.getenv('DB_NAME', default='postgress'),
-#         'USER': os.getenv('POSTGRES_USER', default='postgress'),
-#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgress'),
-#         'HOST': os.getenv('DB_HOST', default='db'),
-#         'PORT': os.getenv('DB_PORT', default='5432')
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': '051186',
-        'HOST': 'localhost',
-        'PORT': '5433',
-    }}
+        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', default='postgress'),
+        'USER': os.getenv('POSTGRES_USER', default='postgress'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgress'),
+        'HOST': os.getenv('DB_HOST', default='db'),
+        'PORT': os.getenv('DB_PORT', default='5432')
+    }
+}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': '051186',
+#         'HOST': 'localhost',
+#         'PORT': '5433',
+#     }}
 AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
