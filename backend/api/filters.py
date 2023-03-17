@@ -17,14 +17,14 @@ class RecipeFilter(FilterSet):
     is_in_shopping_cart = filters.BooleanFilter(method='filter_shopping_cart')
 
     def filter_favorited(self, queryset, name, value):
-        if value:
+        if value and self.request.user.is_authenticated:
             return queryset.filter(favorite_recipe__user=self.request.user)
         return queryset
 
     def filter_shopping_cart(self, queryset, name, value):
         if value:
             return queryset.filter(
-                recipe_shopping_cart__user=self.request.user)
+                shopping_cart_recipe__user=self.request.user)
         return queryset
 
     class Meta:

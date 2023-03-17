@@ -147,7 +147,7 @@ class Favorite(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
-        related_name='favorite',
+        related_name='favorites',
     )
 
     class Meta:
@@ -175,7 +175,7 @@ class ShoppingCart(models.Model):
         Recipe,
         on_delete=models.CASCADE,
         verbose_name='Рецепты в список покупок',
-        related_name='recipe_shopping_cart',)
+        related_name='shopping_cart_recipe',)
 
     class Meta:
         verbose_name = 'Список покупок'
