@@ -17,7 +17,7 @@ INITIAL_TAGS = [
 
 def add_ingredients(apps, schema_editor):
     Ingredient = apps.get_model("recipes", "Ingredient")
-    with open('../data/ingredients.json') as json_file:
+    with open('./data/ingredients.json') as json_file:
         data = json.load(json_file)
     for ingredient in data:
         new_ingredient = Ingredient(name=ingredient['name'],

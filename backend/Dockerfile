@@ -2,10 +2,11 @@ FROM python:3.7-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY requirements.txt /app
 
-RUN pip3 install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt 
+RUN pip3 install -r requirements.txt --no-cache-dir 
 
-COPY backend/ .
+COPY . /app
+
 
 CMD ["gunicorn", "backend.wsgi:application", "--bind", "0:8000" ]

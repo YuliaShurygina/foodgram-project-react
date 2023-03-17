@@ -16,11 +16,6 @@ class RecipeIngredientAdmin(admin.ModelAdmin):
 
 
 class RecipeAdmin(admin.ModelAdmin):
-
-    def added_to_favorite_count(self, obj):
-        return Favorite.objects.filter(recipe=obj).count()
-
-    added_to_favorite_count.short_description = 'Добавлений в избранное'
     list_display = ('id', 'name', 'author', 'added_to_favorite_count')
     readonly_fields = ('added_to_favorite_count',)
     search_fields = ('name',)
@@ -28,6 +23,11 @@ class RecipeAdmin(admin.ModelAdmin):
     filter_horizontal = ('tags',)
     inlines = (RecipeIngredientInline,)
     empty_value_display = '-empty-'
+
+    def added_to_favorite_count(self, obj):
+        return Favorite.objects.filter(recipe=obj).count()
+
+    added_to_favorite_count.short_description = 'Добавлений в избранное'
 
 
 class IngredientAdmin(admin.ModelAdmin):

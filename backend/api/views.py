@@ -3,12 +3,13 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
-                            ShoppingCart, Tag)
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
+
+from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
+                            ShoppingCart, Tag)
 from users.models import Subscribtion, User
 
 from .filters import RecipeFilter
@@ -56,12 +57,10 @@ class CustomUserViewSet(UserViewSet):
             serializer = SubscriptionSerializer(
                 data=request.data, context={"request": request,
                                             "author": author})
-            if serializer.is_valid(raise_exception=True):
-                serializer.save(author=author, user=user)
-                return Response(serializer.data,
-                                status=status.HTTP_201_CREATED)
-            return Response({'errors': 'Объект не найден'},
-                            status=status.HTTP_404_NOT_FOUND)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(author=author, user=user)
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED)
         if request.method == "DELETE":
             if not subscription.exists():
                 return Response(
@@ -148,17 +147,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return self.delete_relation(ShoppingCart, user, pk, name)
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    @action(methods=['get'], detail=False)
+    @action(methods=['get'], detail=False,
+            permission_classes=(IsAuthenticated,))
     def download_shopping_cart(self, request):
         """Cкачать список покупок."""
         items = RecipeIngredient.objects.select_related(
             'recipe', 'ingredient')
-        if request.user.is_authenticated:
-            items = items.filter(
-                recipe__recipe_shopping_cart__user=request.user,)
-        else:
-            items = items.filter(
-                recipe_id__in=request.session['purchases'])
+        items = items.filter(
+            recipe__recipe_shopping_cart__user=request.user,)
         items = items.values('ingredient__name', 'ingredient__measurement_unit'
                              ).annotate(
             name=F('ingredient__name'),

@@ -1,6 +1,7 @@
 from django.core.validators import (MaxValueValidator, MinValueValidator,
                                     RegexValidator)
 from django.db import models
+
 from users.models import User
 
 ALPHANUMERIC = RegexValidator(
@@ -64,7 +65,7 @@ class Recipe(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор',
-        related_name='recipe',
+        related_name='recipes',
     )
     tags = models.ManyToManyField(
         Tag,
