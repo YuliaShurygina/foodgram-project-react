@@ -3,9 +3,9 @@
 
 ## Ссылки на развёрнутый проект
 
-[страница с redoc http://51.250.94.249/api/docs/](http://51.250.94.249/api/docs/ "Redoc")   
-[страница admin http://51.250.94.249/admin/](http://51.250.94.249/admin/ "admin")
-[главная страница http://51.250.94.249/recipes/](http://51.250.94.249/recipes/ "главная")
+#### [страница с redoc http://51.250.94.249/api/docs/](http://51.250.94.249/api/docs/ "Redoc")   
+#### [страница admin http://51.250.94.249/admin/](http://51.250.94.249/admin/ "admin")
+#### [главная страница http://51.250.94.249/recipes/](http://51.250.94.249/recipes/ "главная")
 
 
 # Шаблон наполнения env-файла
@@ -24,7 +24,7 @@
 # Описание команд для запуска приложения в контейнерах
 ## 1) Клонировать репозиторий и перейти в него в командной строке:
 
-git clone https://github.com/YuliaShurygina/infra_sp2.git
+git clone https://github.com/YuliaShurygina/foodgram-project-react
 cd infra
 ## 2) Cборка и запуск контейнеров:
 
