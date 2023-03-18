@@ -5,9 +5,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_RECIPES_LIMIT = 5
+DEFAULT_RECIPES_LIMIT = 6
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*', 'localhost', '51.250.94.249', '127.0.0.1']
 
 INSTALLED_APPS = [
