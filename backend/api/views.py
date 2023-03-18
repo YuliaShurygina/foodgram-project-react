@@ -94,7 +94,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
     def get_serializer_class(self):
-        if self.action in SAFE_METHODS:
+        if self.request.method in SAFE_METHODS:
             return RecipeFavoriteAndCartSerializer
         else:
             return RecipeCreateUpdateSerializer

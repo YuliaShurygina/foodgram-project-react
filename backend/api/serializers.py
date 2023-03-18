@@ -1,10 +1,8 @@
 from django.db import transaction
-from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from rest_framework import serializers
-
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingCart, Tag)
+from rest_framework import serializers
 from users.models import Subscribtion, User
 
 from .fields import Base64ImageField
@@ -143,19 +141,15 @@ class RecipeFavoriteAndCartSerializer(serializers.ModelSerializer):
 
     def get_is_favorited(self, obj):
         """Получение поля рецепт в избранном или нет."""
-        username = self.context['request'].user
-        if not username.is_authenticated:
-            return False
-        user = get_object_or_404(User, username=username)
-        return Favorite.objects.filter(user=user, recipe=obj).exists()
+        user_id = self.context.get('request').user.id
+        return Favorite.objects.filter(
+            user=user_id, recipe=obj.id).exists()
 
     def get_is_in_shopping_cart(self, obj):
         """Получение поля рецепт в корзине или нет."""
-        username = self.context['request'].user
-        if not username.is_authenticated:
-            return False
-        user = get_object_or_404(User, username=username)
-        return ShoppingCart.objects.filter(user=user, recipe=obj).exists()
+        user_id = self.context.get('request').user.id
+        return ShoppingCart.objects.filter(
+            user=user_id, recipe=obj.id).exists()
 
     class Meta:
         model = Recipe
@@ -200,7 +194,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
                 'Ингредиенты должны быть уникальны!')
         return value
 
-    @ transaction.atomic
+    @transaction.atomic
     def create_ingredients(self, ingredients_data, recipe):
         """Создание записей: ингредиент - рецепт - количество."""
         create_ingredients = [RecipeIngredient(
@@ -209,7 +203,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             amount=ingred['amount']) for ingred in ingredients_data]
         RecipeIngredient.objects.bulk_create(create_ingredients)
 
-    @ transaction.atomic
+    @transaction.atomic
     def create(self, validated_data):
         """Создание рецепта."""
         ingredients_data = validated_data.pop('ingredients')

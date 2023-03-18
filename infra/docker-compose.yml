@@ -8,6 +8,7 @@ services:
     env_file:
       - ./.env
   web:
+    #image: yuliyashurygina/foodgram_backend:v1
     build: 
       context: ../backend
       dockerfile: Dockerfile
@@ -21,6 +22,7 @@ services:
       - ./.env
 
   frontend:
+    #image: yuliyashurygina/foodgram_frontend:v1
     build:
       context: ../frontend
       dockerfile: Dockerfile

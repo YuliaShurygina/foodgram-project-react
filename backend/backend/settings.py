@@ -71,15 +71,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',
-#         'USER': 'postgres',
-#         'PASSWORD': '051186',
-#         'HOST': 'localhost',
-#         'PORT': '5433',
-#     }}
 AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
