@@ -118,9 +118,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(
                 {'errors': f'Нельзя повторно добавить рецепт в {name}'},
                 status=status.HTTP_400_BAD_REQUEST)
-        model.objects.create(user=user, recipe=recipe)
-        serializer = RecipeLiteSerializer(recipe)
+        serializer = RecipeLiteSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
+        model.objects.create(user=user, recipe=recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(methods=['post', 'delete'], detail=True)
