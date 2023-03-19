@@ -1,10 +1,10 @@
 from django.db import transaction
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from rest_framework import serializers
-
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingCart, Tag)
+from rest_framework import serializers
 from users.models import Subscribtion, User
+
 from .fields import Base64ImageField
 
 
@@ -184,14 +184,14 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
     def validate(self, value):
         """Валидация ингредиентов."""
         if not value.get('ingredients'):
-            raise serializers.ValidationError({'ingredients': [
-                'Необходимо добавить хотя бы один ингредиент!']})
+            raise serializers.ValidationError(
+                'Необходимо добавить хотя бы один ингредиент!')
         inrgedient_id_list = [item['id']
                               for item in value.get('ingredients')]
         unique_ingredient_id_list = set(inrgedient_id_list)
         if len(inrgedient_id_list) != len(unique_ingredient_id_list):
-            raise serializers.ValidationError({'ingredients': [
-                'Ингредиенты должны быть уникальны!']})
+            raise serializers.ValidationError(
+                'Ингредиенты должны быть уникальны!')
         for ingredient in value.get('ingredients'):
             amount = int(ingredient.get('amount'))
             if amount < 1:
