@@ -19,7 +19,7 @@ services:
       - ./.env
 
   frontend:
-    image: yuliyashurygina/foodgram_frontend:v1:latest
+    image: yuliyashurygina/foodgram_frontend:v1
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
