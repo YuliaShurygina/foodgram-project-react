@@ -1,8 +1,9 @@
 from django.db import transaction
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from rest_framework import serializers
+
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingCart, Tag)
-from rest_framework import serializers
 from users.models import Subscribtion, User
 
 from .fields import Base64ImageField
